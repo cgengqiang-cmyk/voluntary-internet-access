@@ -33,7 +33,7 @@ if [[ "$(uname -m)" != "arm64" ]]; then
   exit 1
 fi
 
-for command in node pnpm cargo rustc curl shasum gzip awk mkdir mktemp chmod xcode-select xcrun codesign hdiutil plutil; do
+for command in node pnpm cargo rustc curl shasum gzip awk mkdir mktemp chmod xcode-select xcrun codesign hdiutil plutil rmdir; do
   require_command "$command"
 done
 
@@ -92,9 +92,27 @@ cargo check --manifest-path "$manifest" --all-targets --all-features
 pnpm tauri build --bundles dmg
 
 shopt -s nullglob
-app_bundles=("${repo_root}"/src-tauri/target/release/bundle/macos/*.app)
+installers=("${repo_root}"/src-tauri/target/release/bundle/dmg/*.dmg)
+if (( ${#installers[@]} != 1 )); then
+  echo "Expected exactly one DMG installer; found ${#installers[@]}." >&2
+  exit 1
+fi
+
+mount_dir="$(mktemp -d)"
+cleanup_dmg_mount_best_effort() {
+  hdiutil detach "$mount_dir" >/dev/null 2>&1 ||
+    hdiutil detach -force "$mount_dir" >/dev/null 2>&1 ||
+    true
+  if [[ -d "$mount_dir" ]]; then
+    rmdir "$mount_dir" >/dev/null 2>&1 || true
+  fi
+}
+trap cleanup_dmg_mount_best_effort EXIT
+
+hdiutil attach -readonly -nobrowse -mountpoint "$mount_dir" "${installers[0]}" >/dev/null
+app_bundles=("${mount_dir}"/*.app)
 if (( ${#app_bundles[@]} != 1 )); then
-  echo "Expected exactly one macOS app bundle; found ${#app_bundles[@]}." >&2
+  echo "Expected exactly one macOS app bundle inside the DMG; found ${#app_bundles[@]}." >&2
   exit 1
 fi
 app_bundle="${app_bundles[0]}"
@@ -132,11 +150,11 @@ if [[ "$helper_core_hash" != "$expected_core_hash" ]]; then
   exit 1
 fi
 
-installers=("${repo_root}"/src-tauri/target/release/bundle/dmg/*.dmg)
-if (( ${#installers[@]} == 0 )); then
-  echo "Tauri completed without producing a DMG installer." >&2
-  exit 1
+hdiutil detach "$mount_dir" >/dev/null
+if [[ -d "$mount_dir" ]]; then
+  rmdir "$mount_dir"
 fi
+trap - EXIT
 
 echo "Verified installer(s):"
 printf '  %s\n' "${installers[@]}"
