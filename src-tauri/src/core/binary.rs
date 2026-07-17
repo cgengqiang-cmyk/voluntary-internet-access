@@ -84,7 +84,7 @@ fn verify_binary(path: &std::path::Path) -> ViaResult<()> {
         if !status.success() {
             return Err(ViaError::Core("Mihomo 代码签名校验失败".to_string()));
         }
-        return Ok(());
+        Ok(())
     }
 
     #[cfg(not(target_os = "macos"))]
