@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-repair-network"
+description = "Enables the repair_network command without any pre-configured scope."
+commands.allow = ["repair_network"]
+
+[[permission]]
+identifier = "deny-repair-network"
+description = "Denies the repair_network command without any pre-configured scope."
+commands.deny = ["repair_network"]
