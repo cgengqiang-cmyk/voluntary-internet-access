@@ -499,14 +499,18 @@ fn validate_with_core(layout: &HelperLayout) -> HelperResult<()> {
 }
 
 fn core_command(layout: &HelperLayout) -> Command {
-    let mut command = Command::new(&layout.core);
     #[cfg(windows)]
     {
         use std::os::windows::process::CommandExt;
         const CREATE_NO_WINDOW: u32 = 0x0800_0000;
+        let mut command = Command::new(&layout.core);
         command.creation_flags(CREATE_NO_WINDOW);
+        command
     }
-    command
+    #[cfg(not(windows))]
+    {
+        Command::new(&layout.core)
+    }
 }
 
 #[cfg(windows)]

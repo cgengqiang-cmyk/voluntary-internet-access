@@ -5,8 +5,11 @@ use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
 
 use super::{
     HELPER_PROTOCOL_VERSION, HelperError, HelperLayout, HelperOperation, HelperRequest,
-    HelperResponse, HelperResult, PIPE_NAME, config::MAX_TUN_CONFIG_BYTES, runtime::HelperRuntime,
+    HelperResponse, HelperResult, config::MAX_TUN_CONFIG_BYTES, runtime::HelperRuntime,
 };
+
+#[cfg(windows)]
+use super::PIPE_NAME;
 
 const MAX_FRAME_BYTES: usize = MAX_TUN_CONFIG_BYTES + 128 * 1024;
 

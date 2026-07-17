@@ -10,9 +10,6 @@ use sha2::{Digest, Sha256};
 
 use crate::error::{ViaError, ViaResult};
 
-#[cfg(target_os = "macos")]
-mod macho_integrity;
-
 #[cfg(target_os = "windows")]
 const EXPECTED_EXECUTABLE_SHA256: &str =
     "c14bda8dc4cc8910ccd2110fe2be083c51a1b66da59141a0b87aff6fe6126517";
@@ -71,7 +68,7 @@ fn verify_binary(path: &std::path::Path) -> ViaResult<()> {
     #[cfg(target_os = "macos")]
     {
         let bytes = std::fs::read(path)?;
-        let normalized = macho_integrity::normalized_macho_sha256(&bytes)
+        let normalized = super::macho_integrity::normalized_macho_sha256(&bytes)
             .map_err(|_| ViaError::Core("Mihomo Mach-O 完整性结构无效".to_string()))?;
         if normalized != env!("VIA_MACOS_MIHOMO_CONTENT_SHA256") {
             return Err(ViaError::Core(format!(
