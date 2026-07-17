@@ -1,0 +1,20 @@
+{
+  "version": "v1.19.28",
+  "source": "https://github.com/MetaCubeX/mihomo/tree/v1.19.28",
+  "platforms": {
+    "windows-x86_64": {
+      "asset": "mihomo-windows-amd64-v1-v1.19.28.zip",
+      "url": "https://github.com/MetaCubeX/mihomo/releases/download/v1.19.28/mihomo-windows-amd64-v1-v1.19.28.zip",
+      "sha256": "e1a47d4eb9b864e242e92ef4d501b052241c7e4eb5a592f2b124959e8efb2312",
+      "executableSha256": "c14bda8dc4cc8910ccd2110fe2be083c51a1b66da59141a0b87aff6fe6126517",
+      "destination": "src-tauri/binaries/mihomo-x86_64-pc-windows-msvc.exe"
+    },
+    "macos-aarch64": {
+      "asset": "mihomo-darwin-arm64-v1.19.28.gz",
+      "url": "https://github.com/MetaCubeX/mihomo/releases/download/v1.19.28/mihomo-darwin-arm64-v1.19.28.gz",
+      "sha256": "40cdae2fab4b18df15f40eaa9dc3af70ab3d8be7f77164ae1e5f1af3a2a4fb44",
+      "executableSha256": "55b7286331cb30a54b2564013b02b84a0c280e8b690bd1e5da4b9d4f4ca007ac",
+      "destination": "src-tauri/binaries/mihomo-aarch64-apple-darwin"
+    }
+  }
+}

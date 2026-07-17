@@ -1,0 +1,22 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Capability for the main window",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "allow-get-app-snapshot",
+    "allow-set-connection",
+    "allow-set-transport-mode",
+    "allow-set-proxy-mode",
+    "allow-import-subscription",
+    "allow-import-profile-file",
+    "allow-refresh-profile",
+    "allow-select-proxy",
+    "allow-test-proxy-delay",
+    "allow-update-settings",
+    "allow-export-diagnostics",
+    "allow-repair-network",
+    "allow-uninstall-components"
+  ]
+}

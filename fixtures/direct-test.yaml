@@ -1,0 +1,10 @@
+# Safe, offline smoke-test profile. No remote proxy or external resource.
+mode: rule
+proxies: []
+proxy-groups:
+  - name: 本机直连
+    type: select
+    proxies:
+      - DIRECT
+rules:
+  - MATCH,DIRECT
